@@ -227,42 +227,14 @@ body {
 </style>
 
 
-          <style>
-.nav-menu {
-    display: flex;
-    align-items: center;       /* vertical center */
-    gap: 12px;
-}
-
-.theme-toggle-main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.toggle-slider-main {
-    padding: 6px 10px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.15);
-}
-</style>
-
-<nav class="nav-menu">
-    <button class="nav-btn active" data-tab="dashboard">Dashboard</button>
-    <button class="nav-btn" data-tab="organizer">Organizer</button>
-    <button class="nav-btn" data-tab="summarizer">Summarizer</button>
-    <button class="nav-btn" data-tab="journal">Journal</button>
-
-    <div class="theme-toggle-main" onclick="toggleDarkMode()" title="Toggle dark mode">
-        <div class="toggle-slider-main">☀️</div>
-    </div>
-
-    <button class="nav-btn" onclick="logout()" style="background: rgba(239, 68, 68, 0.2);">
-        🚪 Logout
-    </button>
-</nav>
-
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-tab="dashboard">Dashboard</button>
+                <button class="nav-btn" data-tab="organizer">Organizer</button>
+                <button class="nav-btn" data-tab="summarizer">Summarizer</button>
+                <button class="nav-btn" data-tab="journal">Journal</button>
+                <button class="nav-btn" onclick="logout()" style="background: rgba(239, 68, 68, 0.2);">🚪 Logout</button>
+                <div class="theme-toggle-main" onclick="toggleDarkMode()" title="Toggle dark mode">
+    <div class="toggle-slider-main">☀️</div>
   </div>
 
             </nav>
@@ -754,4 +726,9 @@ function addActivity(message) {
 
 </body>
 </html>
+
+   
+
+
+
 
