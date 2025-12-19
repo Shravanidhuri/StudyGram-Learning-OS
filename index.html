@@ -548,29 +548,40 @@ for(let i=0;i<35;i++){
 }
 </script>
 
-<!-- ⭐ CURSOR TRAIL SCRIPT -->
-<script>
-document.addEventListener('mousemove', e => {
-  const trail = document.createElement('div');
-  trail.className = 'cursor-trail';
-  trail.style.left = e.pageX + 'px';
-  trail.style.top = e.pageY + 'px';
-  document.body.appendChild(trail);
-  setTimeout(() => trail.remove(), 700);
-});
-</script>
-
-<!-- 📜 SCROLL REVEAL SCRIPT -->
-<script>
-const reveals = document.querySelectorAll('.reveal');
-function revealOnScroll(){
-  reveals.forEach(el=>{
-    const top = el.getBoundingClientRect().top;
-    if(top < window.innerHeight - 100) el.classList.add('visible');
-  });
+<!-- ⭐ CURSOR TRAIL -->
+<style>
+.cursor-trail {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: #d28cff;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  filter: blur(4px);
+  animation: trailFade 0.8s linear forwards;
 }
-window.addEventListener('scroll', revealOnScroll);
-revealOnScroll();
+
+@keyframes trailFade {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+}
+</style>
+
+<script>
+document.addEventListener("mousemove", (e) => {
+  const trail = document.createElement("div");
+  trail.className = "cursor-trail";
+  trail.style.left = e.clientX + "px";
+  trail.style.top = e.clientY + "px";
+  document.body.appendChild(trail);
+
+  setTimeout(() => {
+    trail.remove();
+  }, 700);
+});
 </script>
 
 <!-- 🌀 PARALLAX MOUSE EFFECT -->
