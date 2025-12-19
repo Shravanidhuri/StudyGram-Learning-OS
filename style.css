@@ -57,8 +57,17 @@ body {
 
 .nav-menu {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    gap: 12px;
+
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+.nav-menu::-webkit-scrollbar {
+    display: none;
 }
 
 .nav-btn {
@@ -1236,3 +1245,12 @@ body.dark-mode #journal .btn-primary:hover {
     color: #111827;
     border: 1px solid #d1d5db;
 }
+
+@media (max-width: 768px) {
+    .nav-btn {
+        font-size: 13px;
+        padding: 8px 12px;
+        flex-shrink: 0; /* prevents squishing */
+    }
+}
+
