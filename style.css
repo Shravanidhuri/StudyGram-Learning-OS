@@ -1253,4 +1253,10 @@ body.dark-mode #journal .btn-primary:hover {
         flex-shrink: 0; /* prevents squishing */
     }
 }
+.nav-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
