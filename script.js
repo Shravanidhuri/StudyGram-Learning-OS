@@ -440,7 +440,16 @@ function displaySummary(filename, fullText, summary) {
             <span>Summary: ${summary.split(' ').length} words</span>
             <span>Compression: ${compressionRatio}%</span>
         </div>
-        <div class="summary-content">${summary}</div>
+        <div class="summary-content">
+    ${
+        summary
+            .replace(/•/g, '\n• ')
+            .split(/\n|(?<=\.)\s+/)
+            .filter(line => line.trim().length > 25)
+            .map(line => `<p>${line.trim()}</p>`)
+            .join('')
+    }
+</div>
         <div class="summary-actions">
             <button onclick="copyToClipboard('${summary.replace(/'/g, "\\'")}')">Copy</button>
             <button onclick="downloadSummary('${filename}', '${summary.replace(/'/g, "\\'")}')">Download</button>
