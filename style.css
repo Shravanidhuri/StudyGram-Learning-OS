@@ -1246,13 +1246,7 @@ body.dark-mode #journal .btn-primary:hover {
     border: 1px solid #d1d5db;
 }
 
-@media (max-width: 768px) {
-    .nav-btn {
-        font-size: 13px;
-        padding: 8px 12px;
-        flex-shrink: 0; /* prevents squishing */
-    }
-}
+
 .nav-menu {
     display: flex;
     justify-content: center;
