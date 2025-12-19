@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyGram - Learning OS</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+
+    <!-- FULLSCREEN BACKGROUND + ANIMATED TEXT -->
+<div id="introOverlay">
+  <canvas id="bgCanvas"></canvas>
+  <div class="introText">
+    <h1 id="mainTitle">StudyGram</h1>
+    <p id="subTitle">Learning OS</p>
+  </div>
+</div>
+
+<style>
+/* Fullscreen overlay */
+#introOverlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #0a1a2f, #16213e, #0f3460);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Canvas covers background */
+#bgCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Centered text */
+.introText {
+  position: relative;
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Title animation */
+#mainTitle {
+  font-size: 4rem;
+  font-weight: 800;
+  opacity: 0;
+  animation: fadeInUp 1.4s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+/* Subtitle animation */
+#subTitle {
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  margin-top: 8px;
+  opacity: 0;
+  animation: fadeIn 1.2s ease-out forwards;
+  animation-delay: 1.6s;
+}
+
+/* Text animations */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+</style>
+
+<script>
+// Remove intro after 3s
+setTimeout(() => {
+  document.getElementById("introOverlay").remove();
+}, 3000);
+
+// Particle background
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+const colors = ['#ffffff33','#ffffff22','#ffffff11'];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+function createParticles() {
+  particles = [];
+  for(let i=0; i<120; i++){
+    particles.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      r: Math.random()*2 + 1,
+      vx: (Math.random()-0.5)/2,
+      vy: (Math.random()-0.5)/2,
+      c: colors[Math.floor(Math.random()*colors.length)]
+    });
+  }
+}
+createParticles();
+
+function animate() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if(p.x<0||p.x>canvas.width) p.vx*=-1;
+    if(p.y<0||p.y>canvas.height) p.vy*=-1;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle = p.c;
+    ctx.fill();
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(60deg, #84fab0, #8fd3f4, #a6c1ee, #d4fc79);
+  background-size: 300% 300%;
+  animation: gradientShift 15s ease infinite;
+  color: #fff; /* text color */
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+  <div class="logo">
+    <h1 class="glitch-text">
+      StudyGram - Learning OS
+    </h1>
+    
+  </div>
+
+  
+  <nav class="nav-menu">
+
+<style>
+.glitch-text {
+  font-size: 2.4rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ff00c8; /* base color */
+  position: relative;
+  animation: glitchColor 2s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 #00eaff;
+  clip: rect(0, 900px, 0, 0);
+  animation: glitchTop 2s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: 2px 0 #ff00c8;
+  clip: rect(0, 900px, 0, 0);
+  animation: glitchBottom 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitchColor {
+  0%, 20%, 40%, 60%, 80%, 100% { color: #ff00c8; }
+  10%, 30%, 50%, 70%, 90% { color: #00eaff; }
+}
+
+@keyframes glitchTop {
+  0% { clip: rect(0, 9999px, 0, 0); }
+  10% { clip: rect(5px, 9999px, 25px, 0); }
+  20% { clip: rect(10px, 9999px, 35px, 0); }
+  30% { clip: rect(15px, 9999px, 45px, 0); }
+  40% { clip: rect(20px, 9999px, 50px, 0); }
+  50% { clip: rect(25px, 9999px, 60px, 0); }
+  60% { clip: rect(30px, 9999px, 65px, 0); }
+  70% { clip: rect(35px, 9999px, 70px, 0); }
+  80% { clip: rect(40px, 9999px, 75px, 0); }
+  90% { clip: rect(45px, 9999px, 80px, 0); }
+  100% { clip: rect(0, 9999px, 0, 0); }
+}
+
+@keyframes glitchBottom {
+  0% { clip: rect(0, 9999px, 0, 0); }
+  10% { clip: rect(60px, 9999px, 80px, 0); }
+  20% { clip: rect(55px, 9999px, 75px, 0); }
+  30% { clip: rect(50px, 9999px, 70px, 0); }
+  40% { clip: rect(45px, 9999px, 65px, 0); }
+  50% { clip: rect(40px, 9999px, 60px, 0); }
+  60% { clip: rect(35px, 9999px, 55px, 0); }
+  70% { clip: rect(30px, 9999px, 50px, 0); }
+  80% { clip: rect(25px, 9999px, 45px, 0); }
+  90% { clip: rect(20px, 9999px, 40px, 0); }
+  100% { clip: rect(0, 9999px, 0, 0); }
+}
+</style>
+
+
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-tab="dashboard">Dashboard</button>
+                <button class="nav-btn" data-tab="organizer">Organizer</button>
+                <button class="nav-btn" data-tab="summarizer">Summarizer</button>
+                <button class="nav-btn" data-tab="journal">Journal</button>
+                <button class="nav-btn" onclick="logout()" style="background: rgba(239, 68, 68, 0.2);">🚪 Logout</button>
+                <div class="theme-toggle-main" onclick="toggleDarkMode()" title="Toggle dark mode">
+    <div class="toggle-slider-main">☀️</div>
+  </div>
+
+            </nav>
+        </aside>
+       
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Dashboard Tab -->
+            <section id="dashboard" class="tab-content active">
+                <div class="header">
+                    <h2 style="color:#e5e7eb;">Dashboard</h2>
+<p style="color:#e5e7eb;" id="welcomeMessage">Welcome back! Here's your study overview</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Documents</p>
+                            <p class="stat-value" id="doc-count">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📝</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Notes</p>
+                            <p class="stat-value" id="note-count">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📖</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Journal Entries</p>
+                            <p class="stat-value" id="journal-count">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-info">
+                            <p class="stat-label">Study Hours</p>
+                            <p class="stat-value" id="hours-count">0h</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="recent-section">
+                        <h3>Recent Activity</h3>
+                        <div id="activity-list" class="activity-list">
+                            <p class="empty-state">No activity yet. Start organizing your notes!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Organizer Tab -->
+            <section id="organizer" class="tab-content">
+                <div class="header">
+             <h2 style="color:#ffffff;">Note Organizer</h2>
+<p style="color:#792d97;">Organize your notes by Subject → Chapter → Topic</p>
+
+
+
+
+
+                </div>
+
+                <div class="organizer-container">
+                    <div class="add-section">
+                        <h3>Create New Structure</h3>
+                        <div class="input-group">
+                            <input type="text" id="subject-input" placeholder="Subject name (e.g., Mathematics)">
+                            <button class="btn btn-primary" onclick="addSubject()">Add Subject</button>
+                        </div>
+                    </div>
+
+                    <div class="organizer-tree" id="organizer-tree">
+                        <p class="empty-state">No subjects yet. Create one to get started!</p>
+                    </div>
+                </div>
+
+                <!-- Modal for adding chapters/topics/notes -->
+                <div id="itemModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <h3 id="modalTitle">Add New Item</h3>
+                        <input type="text" id="itemName" placeholder="Name">
+                        <textarea id="itemContent" placeholder="Content or notes"></textarea>
+                        
+                        <!-- File upload for notes -->
+                        <div class="file-upload-modal">
+                            <label>Attach Document</label>
+                            <input type="file" id="modalFileInput" accept=".pdf,.txt,.docx">
+                            <p id="fileName" class="file-name"></p>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="saveItem()">Save</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Summarizer Tab -->
+            <section id="summarizer" class="tab-content">
+                <div class="header">
+                    <h2 style="color:#e5e7eb;">Document Summarizer</h2>
+                    <p style="color:#e5e7eb;">Upload documents to get instant summaries</p>
+                </div>
+
+                <div class="summarizer-container">
+                    <!-- Upload Area -->
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📄</div>
+                        <h3>Drag and drop your document</h3>
+                        <p>or</p>
+                        <button class="btn btn-secondary" onclick="document.getElementById('fileInput').click()">Select File</button>
+                        <input type="file" id="fileInput" hidden accept=".pdf,.txt,.docx">
+                        <p class="file-formats">Supported: PDF, TXT, DOCX</p>
+                    </div>
+
+                    <!-- Processing indicator -->
+                    <div id="processingIndicator" class="processing-indicator" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Processing your document...</p>
+                    </div>
+
+                    <!-- Summaries List -->
+                    <div class="summaries-list" id="summariesList">
+                        <p class="empty-state">No documents summarized yet.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Journal Tab -->
+            <section id="journal" class="tab-content">
+                <div class="header">
+                    <h2 style="color:#e5e7eb;">Study Journal</h2>
+                    <p style="color:#e5e7eb;">Track your learning progress and reflections</p>
+                </div>
+
+                <div class="journal-container">
+                    <div class="add-entry">
+                       <h3 style="color: black;">New Journal Entry</h3>
+
+                        <input type="text" id="journalSubject" placeholder="Subject/Topic">
+                        <select id="journalMood">
+                            <option value="">How's your learning going?</option>
+                            <option value="Great">Great - Confident</option>
+                            <option value="Good">Good - Making progress</option>
+                            <option value="Okay">Okay - Some confusion</option>
+                            <option value="Struggling">Struggling - Need help</option>
+                        </select>
+                        <input type="number" id="journalHours" placeholder="Study hours" min="0" step="0.5">
+                        <textarea id="journalText" placeholder="Write your reflections, learnings, or what you struggled with..."></textarea>
+                        <button class="btn btn-primary" onclick="addJournalEntry()">Save Entry</button>
+                    </div>
+
+                    <div class="journal-entries" id="journalEntries">
+                        <p class="empty-state">No entries yet. Start journaling your learning journey!</p>
+                    </div>
+                </div>
+                </section>
+                
+        </main>
+          <footer class="app-footer">
+            <div class="footer-content-main">
+                <p class="footer-text">
+                    <span class="footer-brand">StudyGram</span> - Built by 
+                    <span class="footer-team">TECHNOPANDAS</span> 
+                    with <span class="footer-heart">❤️</span>
+                </p>
+                
+                <div class="footer-divider"></div>
+                
+                
+                
+               
+                
+                <p class="footer-copyright">
+                    © 2025 StudyGram. All rights reserved.
+                </p>
+            </div>
+        </footer>
+
+    </div>
+       <script>
+// Check if user is logged in
+window.addEventListener('DOMContentLoaded', () => {
+    const session = localStorage.getItem('studygram_session') || sessionStorage.getItem('studygram_session');
+    
+    if (!session) {
+        // Not logged in, redirect to login page
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    const user = JSON.parse(session);
+    if (!user.loggedIn) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // User is logged in, show their name
+    console.log('Welcome, ' + user.name + '!');
+});
+
+// Logout function
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('studygram_session');
+        sessionStorage.removeItem('studygram_session');
+        window.location.href = 'login.html';
+    }
+}
+</script>
+    <script src="script.js"></script>
+    <style>
+/* 🔮 AURORA BACKGROUND */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 10% 20%, #ff8aff, transparent 60%),
+              radial-gradient(circle at 80% 80%, #6a00ff, transparent 60%),
+              radial-gradient(circle at 50% 0%, #00eaff, transparent 60%);
+  filter: blur(150px);
+  z-index: -2;
+  animation: auroraMove 10s infinite alternate ease-in-out;
+}
+@keyframes auroraMove {
+  0% { filter: blur(140px); }
+  100% { filter: blur(200px); }
+}
+
+/* 🌫️ GLASS NAVBAR */
+.navbar {
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+
+/* 🎇 GLOW HOVER EFFECT */
+.btn-primary, .stat, .achievement-card, .project-card {
+  transition: all .3s ease;
+}
+.btn-primary:hover, .stat:hover, .achievement-card:hover, .project-card:hover {
+  box-shadow: 0 0 20px rgba(183, 0, 255, 0.8);
+  transform: translateY(-4px);
+}
+
+
+
+/* 🧊 GLASSMORPHIC CARDS */
+.project-card, .achievement-card, .internship-card, .community-card {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* 🎮 3D TILT EFFECT */
+.tilt {
+  transition: transform .25s ease;
+}
+.tilt:hover {
+  transform: perspective(600px) rotateX(6deg) rotateY(-6deg);
+}
+
+
+/* ⚡ GLITCH TEXT EFFECT FOR NAME */
+.hero-title {
+  position: relative;
+  font-weight: 800;
+  text-transform: uppercase;
+  animation: glitch 2s infinite;
+}
+@keyframes glitch {
+  0% { text-shadow: 2px 2px #ff00c8; }
+  20% { text-shadow: -3px -2px #00eaff; }
+  40% { text-shadow: 3px -2px #ff00c8; }
+  60% { text-shadow: -3px 2px #00eaff; }
+  80% { text-shadow: 2px -2px #ff00c8; }
+  100% { text-shadow: -2px 2px #00eaff; }
+}
+
+/* 🧲 MAGNETIC BUTTONS */
+.magnetic {
+  transition: transform .2s ease;
+  display: inline-block;
+}
+.magnetic:hover {
+  transform: scale(1.1) translateY(-3px);
+}
+</style>
+    <!-- 🌌 PARTICLE GENERATOR -->
+<script>
+const sparkleContainer = document.createElement('div');
+sparkleContainer.classList.add('sparkle-container');
+sparkleContainer.style.position='fixed';
+sparkleContainer.style.inset='0';
+sparkleContainer.style.pointerEvents='none';
+sparkleContainer.style.zIndex='-1';
+document.body.appendChild(sparkleContainer);
+for(let i=0;i<35;i++){
+  const p=document.createElement('span');
+  p.style.left=Math.random()*100+'vw';
+  p.style.top=Math.random()*100+'vh';
+  p.style.animationDelay=(Math.random()*3)+'s';
+  sparkleContainer.appendChild(p);
+}
+</script>
+
+<!-- ⭐ CURSOR TRAIL SCRIPT -->
+<script>
+document.addEventListener('mousemove', e => {
+  const trail = document.createElement('div');
+  trail.className = 'cursor-trail';
+  trail.style.left = e.pageX + 'px';
+  trail.style.top = e.pageY + 'px';
+  document.body.appendChild(trail);
+  setTimeout(() => trail.remove(), 700);
+});
+</script>
+
+<!-- 📜 SCROLL REVEAL SCRIPT -->
+<script>
+const reveals = document.querySelectorAll('.reveal');
+function revealOnScroll(){
+  reveals.forEach(el=>{
+    const top = el.getBoundingClientRect().top;
+    if(top < window.innerHeight - 100) el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll', revealOnScroll);
+revealOnScroll();
+</script>
+
+<!-- 🌀 PARALLAX MOUSE EFFECT -->
+<script>
+document.addEventListener('mousemove', e=>{
+  document.querySelectorAll('.parallax-layer').forEach(layer=>{
+    const speed = layer.getAttribute('data-speed');
+    const x = (window.innerWidth/2 - e.pageX) * speed;
+    const y = (window.innerHeight/2 - e.pageY) * speed;
+    layer.style.transform = `translate(${x}px, ${y}px)`;
+  });
+});
+</script>
+    <style>
+.cursor-trail {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: #d28cff;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  filter: blur(4px);
+  animation: trailFade .8s linear forwards;
+}
+
+@keyframes trailFade {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+}
+</style>
+
+<script>
+document.addEventListener("mousemove", e => {
+  const dot = document.createElement("div");
+  dot.className = "cursor-trail";
+  document.body.appendChild(dot);
+  dot.style.left = e.clientX + "px";
+  dot.style.top = e.clientY + "px";
+  setTimeout(() => dot.remove(), 700);
+});
+
+
+</script>
+
+<script>
+let currentParentId = null; // To track where PDF is being added
+
+// Open modal for adding PDF to a specific chapter/topic
+function openModal(parentId) {
+    currentParentId = parentId;
+    document.getElementById('itemModal').style.display = 'block';
+    document.getElementById('itemName').value = ''; // Not needed for PDF
+    document.getElementById('itemContent').value = ''; // Not needed
+    document.getElementById('modalFileInput').value = '';
+}
+
+// Close modal
+function closeModal() {
+    document.getElementById('itemModal').style.display = 'none';
+}
+
+// Save PDF and display in tree
+function saveItem() {
+    const fileInput = document.getElementById('modalFileInput');
+    const file = fileInput.files[0];
+    if (!file) {
+        alert("Please select a PDF file!");
+        return;
+    }
+
+    if (file.type !== "application/pdf") {
+        alert("Only PDF files are allowed!");
+        return;
+    }
+
+    // Create a blob URL for PDF
+    const fileURL = URL.createObjectURL(file);
+
+    // Create a display element in organizer tree
+    const pdfEl = document.createElement('div');
+    pdfEl.className = 'pdf-item';
+    pdfEl.style.margin = '5px 0';
+    
+    const link = document.createElement('a');
+    link.href = fileURL;
+    link.target = '_blank';
+    link.textContent = file.name;
+    link.style.color = '#792d97';
+    
+    pdfEl.appendChild(link);
+
+    // Append PDF to parent chapter/topic
+    const parentEl = document.getElementById(currentParentId);
+    if (parentEl) {
+        parentEl.appendChild(pdfEl);
+    } else {
+        // If no parent, append to root tree
+        document.getElementById('organizer-tree').appendChild(pdfEl);
+    }
+
+    closeModal();
+}
+</script>
+<style>
+/* Activity item styling */
+.activity-item {
+    background-color: #f0f0f0; /* light gray background */
+    color: #333; /* dark text */
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Optional: hover effect */
+.activity-item:hover {
+    background-color: #e0e0e0;
+}
+</style>
+
+<script>
+// Example: adding an activity dynamically
+function addActivity(message) {
+    const activityList = document.getElementById('activity-list');
+
+    // Remove empty state if present
+    const emptyState = activityList.querySelector('.empty-state');
+    if (emptyState) emptyState.remove();
+
+    const activityEl = document.createElement('div');
+    activityEl.className = 'activity-item';
+    activityEl.textContent = message;
+
+    activityList.prepend(activityEl); // add to top
+}
+
+// Example usage:
+addActivity("Added new PDF 'Mathematics - Chapter 1.pdf'");
+addActivity("Created new Subject 'Physics'");
+</script>
+
+
+
+</body>
+</html>
